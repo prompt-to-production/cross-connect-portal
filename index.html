@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Order a cross-connect | DartPoints</title>
+  <meta name="description" content="Order a cross-connect at a DartPoints data center. Enter the carrier and customer details DartPoints needs to process your order.">
+  <meta name="theme-color" content="#273150">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/site.css">
+  <script src="assets/js/config.js" defer></script>
+  <script src="assets/js/app.js" defer></script>
+</head>
+<body>
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="port" viewBox="0 0 32 32">
+      <path style="fill: var(--port-shell)" d="M16 2H30V16A14 14 0 1 1 16 2Z"/>
+      <circle style="fill: var(--port-gap)" cx="16" cy="16" r="10"/>
+      <circle style="fill: var(--port-core)" cx="16" cy="16" r="7.5"/>
+    </symbol>
+  </svg>
+
+  <a class="skip-link" href="#order-heading">Skip to the order form</a>
+
+  <header class="site-header">
+    <a class="brand" href="./">
+      <img src="assets/img/dartpoints-logo.png" alt="DartPoints Data Centers" width="164" height="47">
+    </a>
+  </header>
+
+  <main class="layout" id="main">
+    <section class="intro" aria-labelledby="page-title">
+      <h1 id="page-title">Order a <span class="nowrap">cross-connect</span></h1>
+      <p class="lede">A cross-connect is the cable between a carrier’s equipment and yours inside a DartPoints data center. Describe both ends below. The diagram fills in as you go so you can check it before you send.</p>
+      <p class="requirement">
+        <strong>Every checklist item is required.</strong>
+        DartPoints can’t accept or process a cross-connect order without all of it. Incomplete or incorrect information may cause delays and additional installation fees.
+      </p>
+      <p class="pricing-note">Lead time is 10 business days for copper and 15 business days for fiber. Pricing is confirmed by DartPoints.</p>
+    </section>
+
+    <!-- Live diagram of the order. Supplemental: everything in it is also in the form and the review table. -->
+    <aside class="panel" id="panel" aria-labelledby="panel-title" data-media="none" data-fiber="">
+      <h2 class="panel-title" id="panel-title">Your cross-connect</h2>
+      <p class="panel-location" data-out="facility" data-empty="Location not set">Location not set</p>
+
+      <div class="patch">
+        <div class="end end-carrier" data-complete="false">
+          <div class="end-head">
+            <p class="end-role">Carrier end</p>
+            <p class="end-name" data-out="carrier" data-empty="Carrier not set">Carrier not set</p>
+          </div>
+          <dl class="end-details">
+            <div><dt>Rack</dt><dd data-out="carrierRack" data-empty="Not set">Not set</dd></div>
+            <div><dt>Device and ports</dt><dd data-out="carrierDevice" data-empty="Not set">Not set</dd></div>
+            <div><dt>Circuit ID</dt><dd data-out="carrierCircuit" data-empty="Not set">Not set</dd></div>
+            <div class="fiber-only"><dt>Connector</dt><dd data-out="connectorCarrier" data-empty="Not set">Not set</dd></div>
+          </dl>
+          <svg class="port port-carrier" aria-hidden="true" focusable="false"><use href="#port"/></svg>
+        </div>
+
+        <div class="cable">
+          <svg class="cable-svg" viewBox="0 0 300 100" aria-hidden="true" focusable="false">
+            <path class="cable-path" d="M66 0 C66 55 234 45 234 100" pathLength="1"/>
+          </svg>
+          <p class="cable-label" data-out="media" data-empty="Cable type not set">Cable type not set</p>
+        </div>
+
+        <div class="end end-customer" data-complete="false">
+          <svg class="port port-customer" aria-hidden="true" focusable="false"><use href="#port"/></svg>
+          <div class="end-head">
+            <p class="end-role">Your end</p>
+            <p class="end-name" data-out="company" data-empty="Your company">Your company</p>
+          </div>
+          <dl class="end-details">
+            <div><dt>Rack</dt><dd data-out="customerRack" data-empty="Not set">Not set</dd></div>
+            <div><dt>Device and ports</dt><dd data-out="customerDevice" data-empty="Not set">Not set</dd></div>
+            <div class="fiber-only"><dt>Connector</dt><dd data-out="connectorCustomer" data-empty="Not set">Not set</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="tally">
+        <p class="tally-text" aria-live="polite"><span data-tally="done">0</span> of <span data-tally="total">8</span> checklist items complete</p>
+        <div class="tally-bar" data-tally="bar" aria-hidden="true"></div>
+      </div>
+    </aside>
+
+    <div class="flow">
+      <!-- Step 1: order form -->
+      <form class="order-form" id="order-form" novalidate>
+        <h2 class="step-title" id="order-heading" tabindex="-1">Cross-connect details</h2>
+
+        <div class="error-summary" id="error-summary" role="alert" tabindex="-1" hidden>
+          <h3 class="error-summary-title">Fill in these items to continue</h3>
+          <ul class="error-summary-list" id="error-summary-list"></ul>
+        </div>
+
+        <fieldset class="group">
+          <legend class="group-title">Location</legend>
+          <div class="field" data-field="facility">
+            <label for="facility">Location address</label>
+            <p class="hint" id="facility-hint">The DartPoints data center where the cross-connect will be installed.</p>
+            <!-- app.js swaps this for a dropdown when facilities are listed in config.js -->
+            <input class="input" id="facility" name="facility" type="text" maxlength="200" autocomplete="off" required aria-describedby="facility-hint facility-error">
+            <p class="error" id="facility-error" hidden></p>
+          </div>
+        </fieldset>
+
+        <fieldset class="group group-end">
+          <legend class="group-title">
+            <svg class="legend-port" aria-hidden="true" focusable="false"><use href="#port"/></svg>
+            Carrier end
+          </legend>
+          <div class="field-row">
+            <div class="field" data-field="carrier">
+              <label for="carrier">Carrier</label>
+              <input class="input" id="carrier" name="carrier" type="text" maxlength="120" autocomplete="off" required aria-describedby="carrier-error">
+              <p class="error" id="carrier-error" hidden></p>
+            </div>
+            <div class="field" data-field="carrierCircuit">
+              <label for="carrierCircuit">Carrier circuit ID</label>
+              <input class="input" id="carrierCircuit" name="carrierCircuit" type="text" maxlength="120" autocomplete="off" spellcheck="false" required aria-describedby="carrierCircuit-error">
+              <p class="error" id="carrierCircuit-error" hidden></p>
+            </div>
+          </div>
+          <div class="field" data-field="carrierRack">
+            <label for="carrierRack">Carrier rack location</label>
+            <p class="hint" id="carrierRack-hint">As provided by the carrier.</p>
+            <input class="input" id="carrierRack" name="carrierRack" type="text" maxlength="200" autocomplete="off" spellcheck="false" required aria-describedby="carrierRack-hint carrierRack-error">
+            <p class="error" id="carrierRack-error" hidden></p>
+          </div>
+          <div class="field" data-field="carrierDevice">
+            <label for="carrierDevice">Carrier device info and port(s)</label>
+            <p class="hint" id="carrierDevice-hint">The carrier’s device or panel and the exact port(s) to connect.</p>
+            <textarea class="input textarea" id="carrierDevice" name="carrierDevice" rows="3" maxlength="1000" spellcheck="false" required aria-describedby="carrierDevice-hint carrierDevice-error"></textarea>
+            <p class="error" id="carrierDevice-error" hidden></p>
+          </div>
+        </fieldset>
+
+        <fieldset class="group group-end">
+          <legend class="group-title">
+            <svg class="legend-port" aria-hidden="true" focusable="false"><use href="#port"/></svg>
+            Your end
+          </legend>
+          <div class="field" data-field="customerRack">
+            <label for="customerRack">Your rack location</label>
+            <p class="hint" id="customerRack-hint">Where your equipment is installed in the facility.</p>
+            <input class="input" id="customerRack" name="customerRack" type="text" maxlength="200" autocomplete="off" spellcheck="false" required aria-describedby="customerRack-hint customerRack-error">
+            <p class="error" id="customerRack-error" hidden></p>
+          </div>
+          <div class="field" data-field="customerDevice">
+            <label for="customerDevice">Your device info and port(s)</label>
+            <p class="hint" id="customerDevice-hint">Your device or panel and the exact port(s) to connect.</p>
+            <textarea class="input textarea" id="customerDevice" name="customerDevice" rows="3" maxlength="1000" spellcheck="false" required aria-describedby="customerDevice-hint customerDevice-error"></textarea>
+            <p class="error" id="customerDevice-error" hidden></p>
+          </div>
+        </fieldset>
+
+        <fieldset class="group">
+          <legend class="group-title">Cable</legend>
+
+          <fieldset class="field choice" data-field="media" aria-describedby="media-error">
+            <legend class="choice-label">Media type</legend>
+            <div class="tiles tiles-2">
+              <label class="tile">
+                <input type="radio" name="media" value="Copper" required>
+                <span class="tile-body"><span class="swatch swatch-copper" aria-hidden="true"></span><span class="tile-text">Copper<span class="tile-sub">10 business days lead time</span></span></span>
+              </label>
+              <label class="tile">
+                <input type="radio" name="media" value="Fiber">
+                <span class="tile-body"><span class="swatch swatch-fiber" aria-hidden="true"></span><span class="tile-text">Fiber<span class="tile-sub">15 business days lead time</span></span></span>
+              </label>
+            </div>
+            <p class="error" id="media-error" hidden></p>
+          </fieldset>
+
+          <div class="fiber-fields" id="fiber-fields" hidden>
+            <fieldset class="field choice" data-field="fiberType" aria-describedby="fiberType-error">
+              <legend class="choice-label">Fiber type</legend>
+              <div class="tiles tiles-3">
+                <label class="tile">
+                  <input type="radio" name="fiberType" value="Single-mode">
+                  <span class="tile-body"><span class="swatch swatch-smf" aria-hidden="true"></span>Single-mode</span>
+                </label>
+                <label class="tile">
+                  <input type="radio" name="fiberType" value="Multimode">
+                  <span class="tile-body"><span class="swatch swatch-mmf" aria-hidden="true"></span>Multimode</span>
+                </label>
+                <label class="tile">
+                  <input type="radio" name="fiberType" value="Other">
+                  <span class="tile-body"><span class="swatch swatch-other" aria-hidden="true"></span>Other</span>
+                </label>
+              </div>
+              <div class="other" id="fiberTypeOther-wrap" hidden>
+                <label for="fiberTypeOther">Describe the fiber type</label>
+                <input class="input" id="fiberTypeOther" name="fiberTypeOther" type="text" maxlength="120" autocomplete="off" aria-describedby="fiberType-error">
+              </div>
+              <p class="error" id="fiberType-error" hidden></p>
+            </fieldset>
+
+            <fieldset class="field choice" data-field="connectors" aria-describedby="connectors-hint connectors-error">
+              <legend class="choice-label">Fiber connector types</legend>
+              <p class="hint" id="connectors-hint">The connector needed at each end of the cable.</p>
+              <div class="field-row">
+                <div class="sub-field">
+                  <label for="connectorCarrier">Carrier end</label>
+                  <select class="input select" id="connectorCarrier" name="connectorCarrier">
+                    <option value="">Choose a connector</option>
+                    <option>LC</option>
+                    <option>SC</option>
+                    <option>MPO/MTP</option>
+                    <option>ST</option>
+                    <option>FC</option>
+                    <option value="Other">Other</option>
+                  </select>
+                  <div class="other" id="connectorCarrierOther-wrap" hidden>
+                    <label for="connectorCarrierOther">Describe the carrier end connector</label>
+                    <input class="input" id="connectorCarrierOther" name="connectorCarrierOther" type="text" maxlength="80" autocomplete="off">
+                  </div>
+                </div>
+                <div class="sub-field">
+                  <label for="connectorCustomer">Your end</label>
+                  <select class="input select" id="connectorCustomer" name="connectorCustomer">
+                    <option value="">Choose a connector</option>
+                    <option>LC</option>
+                    <option>SC</option>
+                    <option>MPO/MTP</option>
+                    <option>ST</option>
+                    <option>FC</option>
+                    <option value="Other">Other</option>
+                  </select>
+                  <div class="other" id="connectorCustomerOther-wrap" hidden>
+                    <label for="connectorCustomerOther">Describe your end connector</label>
+                    <input class="input" id="connectorCustomerOther" name="connectorCustomerOther" type="text" maxlength="80" autocomplete="off">
+                  </div>
+                </div>
+              </div>
+              <p class="error" id="connectors-error" hidden></p>
+            </fieldset>
+          </div>
+        </fieldset>
+
+        <fieldset class="group">
+          <legend class="group-title">Your contact details</legend>
+          <p class="group-hint">So DartPoints can reach you about this order.</p>
+          <div class="field-row">
+            <div class="field" data-field="name">
+              <label for="name">Full name</label>
+              <input class="input" id="name" name="name" type="text" maxlength="120" autocomplete="name" required aria-describedby="name-error">
+              <p class="error" id="name-error" hidden></p>
+            </div>
+            <div class="field" data-field="company">
+              <label for="company">Company</label>
+              <input class="input" id="company" name="company" type="text" maxlength="160" autocomplete="organization" required aria-describedby="company-error">
+              <p class="error" id="company-error" hidden></p>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field" data-field="email">
+              <label for="email">Email</label>
+              <input class="input" id="email" name="email" type="email" maxlength="254" autocomplete="email" spellcheck="false" required aria-describedby="email-error">
+              <p class="error" id="email-error" hidden></p>
+            </div>
+            <div class="field" data-field="phone">
+              <label for="phone">Phone <span class="optional">(optional)</span></label>
+              <input class="input" id="phone" name="phone" type="tel" maxlength="40" autocomplete="tel" aria-describedby="phone-error">
+              <p class="error" id="phone-error" hidden></p>
+            </div>
+          </div>
+          <div class="field" data-field="notes">
+            <label for="notes">Notes <span class="optional">(optional)</span></label>
+            <textarea class="input textarea" id="notes" name="notes" rows="3" maxlength="2000"></textarea>
+          </div>
+        </fieldset>
+
+        <!-- Spam trap: hidden from people, often filled in by bots. -->
+        <div class="trap" aria-hidden="true">
+          <label for="website">Leave this field empty</label>
+          <input id="website" name="_gotcha" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div class="field confirm" data-field="confirm">
+          <label class="check">
+            <input type="checkbox" id="confirm" name="confirm" required aria-describedby="confirm-error">
+            <span>I confirm this information is complete and correct. I understand incomplete or incorrect information may cause delays and additional installation fees.</span>
+          </label>
+          <p class="error" id="confirm-error" hidden></p>
+        </div>
+
+        <div class="actions">
+          <button class="button button-primary" type="submit">Review order</button>
+          <p class="actions-note"><span data-tally="done">0</span> of <span data-tally="total">8</span> checklist items complete</p>
+        </div>
+      </form>
+
+      <!-- Step 2: review -->
+      <section class="review" id="review" aria-labelledby="review-heading" hidden>
+        <h2 class="step-title" id="review-heading" tabindex="-1">Review your order</h2>
+        <p class="step-lede">Check every item before you send. Incorrect information may cause delays and additional installation fees.</p>
+
+        <div class="printable">
+          <div class="print-header" aria-hidden="true">
+            <img src="assets/img/dartpoints-logo.png" alt="" width="164" height="47">
+            <p class="print-title">DartPoints Cross-Connect Checklist</p>
+          </div>
+          <table class="review-table" id="review-table">
+            <caption class="visually-hidden">Cross-connect order details</caption>
+          </table>
+          <p class="print-date" id="print-date"></p>
+        </div>
+
+        <div class="notice notice-info" id="manual-notice" hidden>
+          <p id="manual-note-text"></p>
+        </div>
+        <div class="notice notice-error" id="send-error" role="alert" tabindex="-1" hidden>
+          <p><strong>Your order wasn’t sent.</strong> <span id="send-error-text"></span></p>
+        </div>
+
+        <div class="actions actions-review">
+          <button class="button button-primary" type="button" id="send-button" hidden>Send order</button>
+          <button class="button button-primary" type="button" id="download-button-review" hidden>Download checklist</button>
+          <button class="button button-secondary" type="button" data-action="print" id="print-button-review" hidden>Print or save as PDF</button>
+          <button class="button button-secondary" type="button" id="edit-button">Edit order</button>
+        </div>
+      </section>
+
+      <!-- Step 3: sent -->
+      <section class="done" id="done" aria-labelledby="done-heading" hidden>
+        <h2 class="step-title" id="done-heading" tabindex="-1">Order sent</h2>
+        <p class="step-lede" id="done-text">Your cross-connect order was sent to DartPoints.</p>
+        <p>Keep a copy of the completed checklist for your records.</p>
+        <div class="actions">
+          <button class="button button-secondary" type="button" data-action="download">Download checklist</button>
+          <button class="button button-secondary" type="button" data-action="print">Print or save as PDF</button>
+          <button class="button button-text" type="button" id="new-order-button">Start a new order</button>
+        </div>
+      </section>
+
+      <noscript>
+        <div class="notice notice-info">
+          <p>This order form needs JavaScript. Turn on JavaScript in your browser to place an order.</p>
+        </div>
+      </noscript>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>DartPoints Data Centers</p>
+  </footer>
+</body>
+</html>
